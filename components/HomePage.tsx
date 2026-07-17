@@ -98,7 +98,7 @@ const classicHeroSlides: HeroSlide[] = [
 // Change this one value to "classic" to restore the previous hero instantly.
 const HERO_VARIANT = "centered" as "centered" | "classic";
 const heroSlides = HERO_VARIANT === "centered" ? centeredHeroSlides : classicHeroSlides;
-const HERO_DURATION = 3000;
+const HERO_DURATION = 8000;
 
 function HeroPicture({
   slide,
