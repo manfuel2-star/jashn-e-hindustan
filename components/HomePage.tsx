@@ -168,7 +168,7 @@ export default function HomePage() {
     <>
       <section
         ref={heroRef}
-        className="noise relative min-h-[100dvh] overflow-hidden bg-black text-cream"
+        className={`noise relative overflow-hidden bg-black text-cream ${HERO_VARIANT === "centered" ? "h-[100svh] min-h-[36rem] max-h-[58rem]" : "min-h-[100dvh]"}`}
         onMouseEnter={HERO_VARIANT === "classic" ? () => setHeroPaused(true) : undefined}
         onMouseLeave={HERO_VARIANT === "classic" ? () => setHeroPaused(false) : undefined}
         onFocusCapture={HERO_VARIANT === "classic" ? () => setHeroPaused(true) : undefined}
@@ -200,8 +200,8 @@ export default function HomePage() {
         {HERO_VARIANT === "centered" ? (
           <>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(7,5,4,.08)_0%,rgba(7,5,4,.16)_38%,rgba(7,5,4,.5)_100%),linear-gradient(180deg,rgba(10,7,6,.66)_0%,rgba(10,7,6,.18)_32%,rgba(10,7,6,.3)_63%,rgba(10,7,6,.92)_100%)]" />
-            <div className="pointer-events-none absolute inset-x-5 bottom-5 top-24 rounded-[1.5rem] border border-gold/10 sm:inset-x-8 sm:bottom-8 sm:top-28" />
-            <motion.div style={{ y: contentY, opacity: contentOpacity }} className="section-shell relative flex min-h-[100dvh] flex-col items-center justify-center pb-24 pt-32 text-center sm:pb-28 sm:pt-36">
+            <div className="pointer-events-none absolute inset-x-5 bottom-4 top-20 rounded-[1.5rem] border border-gold/10 sm:inset-x-8 sm:bottom-6 sm:top-24" />
+            <motion.div style={{ y: contentY, opacity: contentOpacity }} className="section-shell relative flex h-full min-h-0 flex-col items-center justify-center pb-16 pt-28 text-center sm:pb-20 sm:pt-32">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={activeSlide}
@@ -211,20 +211,20 @@ export default function HomePage() {
                   transition={{ duration: reduceMotion ? 0 : .72, ease: [0.22, 1, 0.36, 1] }}
                   className="flex w-full flex-col items-center"
                 >
-                  <p className="mb-5 flex items-center justify-center gap-3 text-[0.58rem] font-bold uppercase tracking-[0.2em] text-gold sm:mb-7 sm:text-[0.68rem] sm:tracking-[0.3em]"><span className="h-px w-7 bg-gold/75 sm:w-10" />{slide.eyebrow}<span className="h-px w-7 bg-gold/75 sm:w-10" /></p>
-                  <h1 className="max-w-[98rem] font-serif text-[clamp(3.25rem,14vw,10.25rem)] leading-[0.78] tracking-[-0.055em] drop-shadow-[0_5px_30px_rgba(0,0,0,.5)]">
+                  <p className="mb-4 flex items-center justify-center gap-3 text-[0.56rem] font-bold uppercase tracking-[0.19em] text-gold sm:mb-5 sm:text-[0.64rem] sm:tracking-[0.28em]"><span className="h-px w-7 bg-gold/75 sm:w-10" />{slide.eyebrow}<span className="h-px w-7 bg-gold/75 sm:w-10" /></p>
+                  <h1 className="max-w-[84rem] font-serif text-[clamp(2.8rem,9vw,8.5rem)] leading-[0.82] tracking-[-0.05em] drop-shadow-[0_5px_30px_rgba(0,0,0,.5)]">
                     <span className="block">{slide.title}</span><em className="mt-1 block font-normal text-gold sm:mt-2">{slide.accent}</em>
                   </h1>
-                  <p className="mt-6 max-w-[43rem] text-[0.92rem] leading-6 text-cream/76 drop-shadow-[0_2px_14px_rgba(0,0,0,.75)] sm:mt-8 sm:text-lg sm:leading-8">{slide.description}</p>
+                  <p className="mt-5 max-w-[40rem] text-[0.86rem] leading-6 text-cream/76 drop-shadow-[0_2px_14px_rgba(0,0,0,.75)] sm:mt-6 sm:text-base sm:leading-7">{slide.description}</p>
                 </motion.div>
               </AnimatePresence>
               <p className="sr-only" aria-live="polite">Slide {activeSlide + 1} of {heroSlides.length}: {slide.title} {slide.accent}</p>
-              <div className="mt-7 grid w-full max-w-[31rem] grid-cols-2 gap-2.5 sm:mt-9 sm:flex sm:justify-center sm:gap-3">
-                <Link href="/schedule" className="button button-gold px-3 sm:px-7">Explore schedule <ArrowRight size={15} /></Link>
-                <Link href="/visitors-guide" className="button button-outline px-3 sm:px-7">Plan your visit</Link>
+              <div className="mt-5 grid w-full max-w-[29rem] grid-cols-2 gap-2.5 sm:mt-7 sm:flex sm:justify-center sm:gap-3">
+                <Link href="/schedule" className="button button-gold px-3 sm:px-6">Explore schedule <ArrowRight size={15} /></Link>
+                <Link href="/visitors-guide" className="button button-outline px-3 sm:px-6">Plan your visit</Link>
               </div>
-              <div className="mt-5 flex items-center justify-center gap-1.5 sm:mt-7 sm:gap-2" aria-label="Hero slide controls">
-                <button type="button" onClick={() => changeSlide(-1)} className="grid size-10 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold sm:size-11" aria-label="Previous hero slide"><ArrowLeft size={15} /></button>
+              <div className="mt-3.5 flex items-center justify-center gap-1.5 sm:mt-5 sm:gap-2" aria-label="Hero slide controls">
+                <button type="button" onClick={() => changeSlide(-1)} className="grid size-9 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold sm:size-10" aria-label="Previous hero slide"><ArrowLeft size={14} /></button>
                 <div className="mx-1 flex items-center gap-1 sm:mx-2 sm:gap-2">
                   {heroSlides.map((item, index) => (
                     <button key={item.image} type="button" onClick={() => setActiveSlide(index)} className="flex h-10 items-center px-1" aria-label={`Show hero slide ${index + 1}`} aria-current={index === activeSlide ? "true" : undefined}>
@@ -234,11 +234,11 @@ export default function HomePage() {
                     </button>
                   ))}
                 </div>
-                <button type="button" onClick={() => changeSlide(1)} className="grid size-10 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold sm:size-11" aria-label="Next hero slide"><ArrowRight size={15} /></button>
+                <button type="button" onClick={() => changeSlide(1)} className="grid size-9 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold sm:size-10" aria-label="Next hero slide"><ArrowRight size={14} /></button>
                 <span className="ml-1 hidden text-[0.58rem] tabular-nums tracking-[0.18em] text-cream/55 sm:block">0{activeSlide + 1} / 0{heroSlides.length}</span>
               </div>
             </motion.div>
-            <a href="#grand-stage" aria-label="Scroll to the Grand Stage" className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[0.55rem] uppercase tracking-[0.22em] text-cream/55 md:flex"><span className="flex h-11 w-7 justify-center rounded-full border border-white/25 pt-2"><motion.span animate={reduceMotion ? undefined : { y: [0, 9, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} className="size-1 rounded-full bg-gold" /></span>Discover</a>
+            <a href="#grand-stage" aria-label="Scroll to the Grand Stage" className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-[0.52rem] uppercase tracking-[0.22em] text-cream/55 md:flex"><span className="flex h-10 w-6 justify-center rounded-full border border-white/25 pt-2"><motion.span animate={reduceMotion ? undefined : { y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} className="size-1 rounded-full bg-gold" /></span>Discover</a>
           </>
         ) : (
           <>
