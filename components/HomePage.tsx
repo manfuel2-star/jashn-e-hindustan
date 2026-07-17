@@ -18,7 +18,51 @@ const experiences = [
 
 const gallery = ["/images/holi.jpg", "/images/diya.jpg", "/images/folk-dance.jpg", "/images/kites.jpg", "/images/musician.jpg", "/images/colour.jpg", "/images/fireworks.jpg", "/images/classical-dance.jpg"];
 
-const heroSlides = [
+type HeroSlide = {
+  image: string;
+  mobileImage: string;
+  alt: string;
+  eyebrow: string;
+  title: string;
+  accent: string;
+  description: string;
+  position: string;
+};
+
+const centeredHeroSlides: HeroSlide[] = [
+  {
+    image: "/images/hero-centered-gateway.jpg",
+    mobileImage: "/images/hero-centered-gateway-mobile.jpg",
+    alt: "An illuminated heritage gateway welcoming guests to an evening festival",
+    eyebrow: "12–14 February 2027 · New Delhi",
+    title: "Jashn-e-",
+    accent: "Hindustan",
+    description: "Three winter evenings of language, music, food and craft—India’s living heritage, gathered beneath one sky.",
+    position: "center center",
+  },
+  {
+    image: "/images/hero-centered-mehfil.jpg",
+    mobileImage: "/images/hero-centered-mehfil-mobile.jpg",
+    alt: "A qawwali ensemble performing in a lantern-lit heritage courtyard",
+    eyebrow: "Music · Poetry · Shared Listening",
+    title: "Every voice.",
+    accent: "One mehfil.",
+    description: "From intimate verse to expansive song, encounter traditions that have travelled across regions and generations.",
+    position: "center center",
+  },
+  {
+    image: "/images/hero-centered-craft.jpg",
+    mobileImage: "/images/hero-centered-craft-mobile.jpg",
+    alt: "Visitors walking through a lantern-lit heritage craft courtyard",
+    eyebrow: "Craft · Flavour · Living Memory",
+    title: "Made by hand.",
+    accent: "Carried by heart.",
+    description: "Meet the makers, kitchens and storytellers shaping a contemporary celebration rooted in many Indias.",
+    position: "center center",
+  },
+];
+
+const classicHeroSlides: HeroSlide[] = [
   {
     image: "/images/hero-festival-v2-hq.jpg",
     mobileImage: "/images/hero-dance-mobile-hq.jpg",
@@ -26,6 +70,7 @@ const heroSlides = [
     eyebrow: "A festival of many Indias",
     title: "Jashn-e-",
     accent: "Hindustan",
+    description: "",
     position: "68% center",
   },
   {
@@ -35,6 +80,7 @@ const heroSlides = [
     eyebrow: "Music across traditions",
     title: "One sky.",
     accent: "Many songs.",
+    description: "",
     position: "72% center",
   },
   {
@@ -44,18 +90,22 @@ const heroSlides = [
     eyebrow: "Craft, food & living heritage",
     title: "India,",
     accent: "made by hand.",
+    description: "",
     position: "73% center",
   },
 ] as const;
 
-const HERO_DURATION = 2000;
+// Change this one value to "classic" to restore the previous hero instantly.
+const HERO_VARIANT = "centered" as "centered" | "classic";
+const heroSlides = HERO_VARIANT === "centered" ? centeredHeroSlides : classicHeroSlides;
+const HERO_DURATION = 3000;
 
 function HeroPicture({
   slide,
   alt,
   priority,
 }: {
-  slide: (typeof heroSlides)[number];
+  slide: HeroSlide;
   alt: string;
   priority: boolean;
 }) {
@@ -76,7 +126,7 @@ function HeroPicture({
       <img
         {...desktopProps}
         alt={alt}
-        className="object-cover [object-position:center_top] sm:[object-position:var(--hero-position)]"
+        className={HERO_VARIANT === "centered" ? "object-cover object-center" : "object-cover [object-position:center_top] sm:[object-position:var(--hero-position)]"}
         style={{ ...desktopProps.style, "--hero-position": slide.position } as CSSProperties}
       />
     </picture>
@@ -119,10 +169,10 @@ export default function HomePage() {
       <section
         ref={heroRef}
         className="noise relative min-h-[100dvh] overflow-hidden bg-black text-cream"
-        onMouseEnter={() => setHeroPaused(true)}
-        onMouseLeave={() => setHeroPaused(false)}
-        onFocusCapture={() => setHeroPaused(true)}
-        onBlurCapture={() => setHeroPaused(false)}
+        onMouseEnter={HERO_VARIANT === "classic" ? () => setHeroPaused(true) : undefined}
+        onMouseLeave={HERO_VARIANT === "classic" ? () => setHeroPaused(false) : undefined}
+        onFocusCapture={HERO_VARIANT === "classic" ? () => setHeroPaused(true) : undefined}
+        onBlurCapture={HERO_VARIANT === "classic" ? () => setHeroPaused(false) : undefined}
         onTouchStart={(event) => { touchStartX.current = event.touches[0]?.clientX ?? 0; }}
         onTouchEnd={(event) => {
           const distance = (event.changedTouches[0]?.clientX ?? touchStartX.current) - touchStartX.current;
@@ -135,7 +185,7 @@ export default function HomePage() {
               key={item.image}
               initial={false}
               animate={{ opacity: index === activeSlide ? 1 : 0, scale: index === activeSlide ? 1 : 1.035 }}
-              transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: reduceMotion ? 0 : HERO_VARIANT === "centered" ? 0.9 : 0.75, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 will-change-transform"
               aria-hidden={index !== activeSlide}
             >
@@ -147,50 +197,76 @@ export default function HomePage() {
             </motion.div>
           ))}
         </motion.div>
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,9,8,.46)_0%,rgba(13,9,8,.06)_30%,rgba(13,9,8,.14)_48%,rgba(13,9,8,.96)_82%),linear-gradient(90deg,rgba(13,9,8,.52)_0%,transparent_84%)] sm:bg-[linear-gradient(90deg,rgba(13,9,8,.94)_0%,rgba(13,9,8,.58)_45%,rgba(13,9,8,.12)_78%),linear-gradient(0deg,rgba(13,9,8,.82)_0%,transparent_55%)]" />
-        <div className="absolute left-[8%] top-[20%] hidden h-[36rem] w-[36rem] rounded-full border border-gold/20 md:block" />
-        <div className="absolute left-[12%] top-[26%] hidden h-[28rem] w-[28rem] rounded-full border border-gold/10 md:block" />
-        <motion.div style={{ y: contentY, opacity: contentOpacity }} className="section-shell relative flex min-h-[100dvh] flex-col justify-end pb-9 pt-32 md:justify-center md:pb-10 md:pt-36">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div key={activeSlide} initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: reduceMotion ? 0 : .55, ease: [0.22, 1, 0.36, 1] }}>
-              <p className="mb-4 flex items-center gap-3 text-[0.62rem] font-bold uppercase tracking-[0.23em] text-gold sm:mb-5 sm:text-[0.66rem] sm:tracking-[0.26em]"><span className="h-px w-8 bg-gold sm:w-9" />{slide.eyebrow}</p>
-              <h1 className="max-w-6xl font-serif text-[clamp(3.2rem,16vw,4.75rem)] leading-[0.8] tracking-[-0.055em] sm:text-[clamp(4.25rem,11vw,10.5rem)] sm:leading-[0.76]">
-                {slide.title}<br /><em className="font-normal text-gold">{slide.accent}</em>
-              </h1>
+        {HERO_VARIANT === "centered" ? (
+          <>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(7,5,4,.08)_0%,rgba(7,5,4,.16)_38%,rgba(7,5,4,.5)_100%),linear-gradient(180deg,rgba(10,7,6,.66)_0%,rgba(10,7,6,.18)_32%,rgba(10,7,6,.3)_63%,rgba(10,7,6,.92)_100%)]" />
+            <div className="pointer-events-none absolute inset-x-5 bottom-5 top-24 rounded-[1.5rem] border border-gold/10 sm:inset-x-8 sm:bottom-8 sm:top-28" />
+            <motion.div style={{ y: contentY, opacity: contentOpacity }} className="section-shell relative flex min-h-[100dvh] flex-col items-center justify-center pb-24 pt-32 text-center sm:pb-28 sm:pt-36">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={activeSlide}
+                  initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -16, filter: "blur(5px)" }}
+                  transition={{ duration: reduceMotion ? 0 : .72, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex w-full flex-col items-center"
+                >
+                  <p className="mb-5 flex items-center justify-center gap-3 text-[0.58rem] font-bold uppercase tracking-[0.2em] text-gold sm:mb-7 sm:text-[0.68rem] sm:tracking-[0.3em]"><span className="h-px w-7 bg-gold/75 sm:w-10" />{slide.eyebrow}<span className="h-px w-7 bg-gold/75 sm:w-10" /></p>
+                  <h1 className="max-w-[98rem] font-serif text-[clamp(3.25rem,14vw,10.25rem)] leading-[0.78] tracking-[-0.055em] drop-shadow-[0_5px_30px_rgba(0,0,0,.5)]">
+                    <span className="block">{slide.title}</span><em className="mt-1 block font-normal text-gold sm:mt-2">{slide.accent}</em>
+                  </h1>
+                  <p className="mt-6 max-w-[43rem] text-[0.92rem] leading-6 text-cream/76 drop-shadow-[0_2px_14px_rgba(0,0,0,.75)] sm:mt-8 sm:text-lg sm:leading-8">{slide.description}</p>
+                </motion.div>
+              </AnimatePresence>
+              <p className="sr-only" aria-live="polite">Slide {activeSlide + 1} of {heroSlides.length}: {slide.title} {slide.accent}</p>
+              <div className="mt-7 grid w-full max-w-[31rem] grid-cols-2 gap-2.5 sm:mt-9 sm:flex sm:justify-center sm:gap-3">
+                <Link href="/schedule" className="button button-gold px-3 sm:px-7">Explore schedule <ArrowRight size={15} /></Link>
+                <Link href="/visitors-guide" className="button button-outline px-3 sm:px-7">Plan your visit</Link>
+              </div>
+              <div className="mt-5 flex items-center justify-center gap-1.5 sm:mt-7 sm:gap-2" aria-label="Hero slide controls">
+                <button type="button" onClick={() => changeSlide(-1)} className="grid size-10 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold sm:size-11" aria-label="Previous hero slide"><ArrowLeft size={15} /></button>
+                <div className="mx-1 flex items-center gap-1 sm:mx-2 sm:gap-2">
+                  {heroSlides.map((item, index) => (
+                    <button key={item.image} type="button" onClick={() => setActiveSlide(index)} className="flex h-10 items-center px-1" aria-label={`Show hero slide ${index + 1}`} aria-current={index === activeSlide ? "true" : undefined}>
+                      <span className="relative block h-px w-7 overflow-hidden bg-white/25 sm:w-12">
+                        {index === activeSlide && <motion.span key={`${activeSlide}-${heroPaused}`} initial={{ scaleX: reduceMotion || heroPaused ? 1 : 0 }} animate={{ scaleX: 1 }} transition={{ duration: reduceMotion || heroPaused ? 0 : HERO_DURATION / 1000, ease: "linear" }} className="absolute inset-0 origin-left bg-gold" />}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                <button type="button" onClick={() => changeSlide(1)} className="grid size-10 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold sm:size-11" aria-label="Next hero slide"><ArrowRight size={15} /></button>
+                <span className="ml-1 hidden text-[0.58rem] tabular-nums tracking-[0.18em] text-cream/55 sm:block">0{activeSlide + 1} / 0{heroSlides.length}</span>
+              </div>
             </motion.div>
-          </AnimatePresence>
-          <p className="sr-only" aria-live="polite">Slide {activeSlide + 1} of {heroSlides.length}: {slide.title} {slide.accent}</p>
-          <div className="mt-7 flex flex-col gap-6 sm:mt-8 md:flex-row md:items-center md:gap-12">
-            <div className="flex gap-8 border-l border-gold/50 pl-5 text-sm leading-6 text-cream/75">
-              <span><strong className="block text-cream">12–14 February</strong>2027</span>
-              <span><strong className="block text-cream">Sunder Nursery</strong>New Delhi</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:gap-3"><Link href="/schedule" className="button button-gold px-3 sm:px-[1.35rem]">Explore schedule <ArrowRight size={15} /></Link><Link href="/visitors-guide" className="button button-outline px-3 sm:px-[1.35rem]">Plan your visit</Link></div>
-          </div>
-          <div className="mt-6 flex items-center gap-2 sm:mt-8" aria-label="Hero slide controls">
-            <button type="button" onClick={() => changeSlide(-1)} className="grid size-11 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold" aria-label="Previous hero slide"><ArrowLeft size={16} /></button>
-            <button type="button" onClick={() => changeSlide(1)} className="grid size-11 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold" aria-label="Next hero slide"><ArrowRight size={16} /></button>
-            <div className="ml-2 flex items-center gap-2 sm:ml-3">
-              {heroSlides.map((item, index) => (
-                <button key={item.image} type="button" onClick={() => setActiveSlide(index)} className="flex h-11 items-center px-1" aria-label={`Show hero slide ${index + 1}`} aria-current={index === activeSlide ? "true" : undefined}>
-                  <span className="relative block h-px w-7 overflow-hidden bg-white/25 sm:w-10">
-                    {index === activeSlide && (
-                      <motion.span
-                        key={`${activeSlide}-${heroPaused}`}
-                        initial={{ scaleX: reduceMotion || heroPaused ? 1 : 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ duration: reduceMotion || heroPaused ? 0 : HERO_DURATION / 1000, ease: "linear" }}
-                        className="absolute inset-0 origin-left bg-gold"
-                      />
-                    )}
-                  </span>
-                </button>
-              ))}
-            </div>
-            <span className="ml-1 text-[0.6rem] tabular-nums tracking-[0.2em] text-cream/55">0{activeSlide + 1} / 0{heroSlides.length}</span>
-          </div>
-        </motion.div>
-        <a href="#grand-stage" aria-label="Scroll to the Grand Stage" className="absolute bottom-8 right-6 hidden items-center gap-3 text-[0.62rem] uppercase tracking-[0.22em] text-cream/60 md:flex md:right-10"><span className="grid size-11 place-items-center rounded-full border border-white/20"><ArrowDown size={15} /></span>Discover</a>
+            <a href="#grand-stage" aria-label="Scroll to the Grand Stage" className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[0.55rem] uppercase tracking-[0.22em] text-cream/55 md:flex"><span className="flex h-11 w-7 justify-center rounded-full border border-white/25 pt-2"><motion.span animate={reduceMotion ? undefined : { y: [0, 9, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} className="size-1 rounded-full bg-gold" /></span>Discover</a>
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,9,8,.46)_0%,rgba(13,9,8,.06)_30%,rgba(13,9,8,.14)_48%,rgba(13,9,8,.96)_82%),linear-gradient(90deg,rgba(13,9,8,.52)_0%,transparent_84%)] sm:bg-[linear-gradient(90deg,rgba(13,9,8,.94)_0%,rgba(13,9,8,.58)_45%,rgba(13,9,8,.12)_78%),linear-gradient(0deg,rgba(13,9,8,.82)_0%,transparent_55%)]" />
+            <div className="absolute left-[8%] top-[20%] hidden h-[36rem] w-[36rem] rounded-full border border-gold/20 md:block" />
+            <div className="absolute left-[12%] top-[26%] hidden h-[28rem] w-[28rem] rounded-full border border-gold/10 md:block" />
+            <motion.div style={{ y: contentY, opacity: contentOpacity }} className="section-shell relative flex min-h-[100dvh] flex-col justify-end pb-9 pt-32 md:justify-center md:pb-10 md:pt-36">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div key={activeSlide} initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: reduceMotion ? 0 : .55, ease: [0.22, 1, 0.36, 1] }}>
+                  <p className="mb-4 flex items-center gap-3 text-[0.62rem] font-bold uppercase tracking-[0.23em] text-gold sm:mb-5 sm:text-[0.66rem] sm:tracking-[0.26em]"><span className="h-px w-8 bg-gold sm:w-9" />{slide.eyebrow}</p>
+                  <h1 className="max-w-6xl font-serif text-[clamp(3.2rem,16vw,4.75rem)] leading-[0.8] tracking-[-0.055em] sm:text-[clamp(4.25rem,11vw,10.5rem)] sm:leading-[0.76]">{slide.title}<br /><em className="font-normal text-gold">{slide.accent}</em></h1>
+                </motion.div>
+              </AnimatePresence>
+              <p className="sr-only" aria-live="polite">Slide {activeSlide + 1} of {heroSlides.length}: {slide.title} {slide.accent}</p>
+              <div className="mt-7 flex flex-col gap-6 sm:mt-8 md:flex-row md:items-center md:gap-12">
+                <div className="flex gap-8 border-l border-gold/50 pl-5 text-sm leading-6 text-cream/75"><span><strong className="block text-cream">12–14 February</strong>2027</span><span><strong className="block text-cream">Sunder Nursery</strong>New Delhi</span></div>
+                <div className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:gap-3"><Link href="/schedule" className="button button-gold px-3 sm:px-[1.35rem]">Explore schedule <ArrowRight size={15} /></Link><Link href="/visitors-guide" className="button button-outline px-3 sm:px-[1.35rem]">Plan your visit</Link></div>
+              </div>
+              <div className="mt-6 flex items-center gap-2 sm:mt-8" aria-label="Hero slide controls">
+                <button type="button" onClick={() => changeSlide(-1)} className="grid size-11 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold" aria-label="Previous hero slide"><ArrowLeft size={16} /></button>
+                <button type="button" onClick={() => changeSlide(1)} className="grid size-11 shrink-0 place-items-center rounded-full border border-white/20 text-cream transition-colors hover:border-gold hover:text-gold" aria-label="Next hero slide"><ArrowRight size={16} /></button>
+                <div className="ml-2 flex items-center gap-2 sm:ml-3">{heroSlides.map((item, index) => <button key={item.image} type="button" onClick={() => setActiveSlide(index)} className="flex h-11 items-center px-1" aria-label={`Show hero slide ${index + 1}`} aria-current={index === activeSlide ? "true" : undefined}><span className="relative block h-px w-7 overflow-hidden bg-white/25 sm:w-10">{index === activeSlide && <motion.span key={`${activeSlide}-${heroPaused}`} initial={{ scaleX: reduceMotion || heroPaused ? 1 : 0 }} animate={{ scaleX: 1 }} transition={{ duration: reduceMotion || heroPaused ? 0 : HERO_DURATION / 1000, ease: "linear" }} className="absolute inset-0 origin-left bg-gold" />}</span></button>)}</div>
+                <span className="ml-1 text-[0.6rem] tabular-nums tracking-[0.2em] text-cream/55">0{activeSlide + 1} / 0{heroSlides.length}</span>
+              </div>
+            </motion.div>
+            <a href="#grand-stage" aria-label="Scroll to the Grand Stage" className="absolute bottom-8 right-6 hidden items-center gap-3 text-[0.62rem] uppercase tracking-[0.22em] text-cream/60 md:flex md:right-10"><span className="grid size-11 place-items-center rounded-full border border-white/20"><ArrowDown size={15} /></span>Discover</a>
+          </>
+        )}
       </section>
 
       <div className="overflow-hidden border-y border-black/10 bg-gold py-4 text-black">

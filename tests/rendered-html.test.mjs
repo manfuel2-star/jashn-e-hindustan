@@ -31,7 +31,7 @@ test("server-renders the complete festival homepage and rotating hero", async ()
   assert.match(html, /<title>Festival 2027 · Jashn-e-Hindustan<\/title>/i);
   assert.match(html, /Jashn-e-/);
   assert.match(html, /Hindustan/);
-  assert.match(html, /hero-festival-v2-hq\.jpg/);
+  assert.match(html, /hero-centered-gateway\.jpg/);
   assert.doesNotMatch(html, /<main style="opacity:0"/);
   assert.match(html, /Hero slide controls/);
   assert.match(html, /Previous hero slide/);
