@@ -32,11 +32,7 @@ test("server-renders the complete festival homepage and rotating hero", async ()
   assert.match(html, /Jashn-e-/);
   assert.match(html, /Hindustan/);
   assert.match(html, /hero-festival-v2-hq\.jpg/);
-  assert.match(html, /hero-music-hq\.jpg/);
-  assert.match(html, /hero-craft-hq\.jpg/);
-  assert.match(html, /hero-dance-mobile-hq\.jpg/);
-  assert.match(html, /hero-music-mobile-hq\.jpg/);
-  assert.match(html, /hero-craft-mobile-hq\.jpg/);
+  assert.doesNotMatch(html, /<main style="opacity:0"/);
   assert.match(html, /Hero slide controls/);
   assert.match(html, /Previous hero slide/);
   assert.match(html, /Next hero slide/);

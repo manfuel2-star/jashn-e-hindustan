@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowLeft, ArrowRight, CalendarDays, MapPin, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import EventCard from "@/components/EventCard";
 import SectionHeading from "@/components/SectionHeading";
@@ -50,6 +50,39 @@ const heroSlides = [
 
 const HERO_DURATION = 6500;
 
+function HeroPicture({
+  slide,
+  alt,
+  priority,
+}: {
+  slide: (typeof heroSlides)[number];
+  alt: string;
+  priority: boolean;
+}) {
+  const shared = {
+    alt,
+    fill: true as const,
+    sizes: "100vw",
+    quality: 95,
+    priority,
+    loading: priority ? undefined : ("lazy" as const),
+  };
+  const { props: mobileProps } = getImageProps({ ...shared, src: slide.mobileImage });
+  const { props: desktopProps } = getImageProps({ ...shared, src: slide.image });
+
+  return (
+    <picture>
+      <source media="(max-width: 639px)" srcSet={mobileProps.srcSet} sizes={mobileProps.sizes} />
+      <img
+        {...desktopProps}
+        alt={alt}
+        className="object-cover [object-position:center_top] sm:[object-position:var(--hero-position)]"
+        style={{ ...desktopProps.style, "--hero-position": slide.position } as CSSProperties}
+      />
+    </picture>
+  );
+}
+
 export default function HomePage() {
   const heroRef = useRef<HTMLElement>(null);
   const touchStartX = useRef(0);
@@ -60,8 +93,14 @@ export default function HomePage() {
   const reduceMotion = useReducedMotion();
   const [activeSlide, setActiveSlide] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
+  const [heroMediaReady, setHeroMediaReady] = useState(false);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const slide = heroSlides[activeSlide];
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setHeroMediaReady(true), 800);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (heroPaused || reduceMotion) return;
@@ -91,7 +130,7 @@ export default function HomePage() {
         }}
       >
         <motion.div style={{ y: imageY }} className="absolute -inset-y-10 inset-x-0 md:-top-16">
-          {heroSlides.map((item, index) => (
+          {heroSlides.map((item, index) => (index === 0 || heroMediaReady) && (
             <motion.div
               key={item.image}
               initial={false}
@@ -100,30 +139,10 @@ export default function HomePage() {
               className="absolute inset-0 will-change-transform"
               aria-hidden={index !== activeSlide}
             >
-              <Image
-                src={item.mobileImage}
+              <HeroPicture
+                slide={item}
                 alt={index === activeSlide ? item.alt : ""}
-                fill
                 priority={index === 0}
-                loading={index === 0 ? undefined : "eager"}
-                sizes="100vw"
-                quality={95}
-                className="object-cover object-top sm:hidden"
-                placeholder="blur"
-                blurDataURL={BLUR_DATA_URL}
-              />
-              <Image
-                src={item.image}
-                alt={index === activeSlide ? item.alt : ""}
-                fill
-                priority={index === 0}
-                loading={index === 0 ? undefined : "eager"}
-                sizes="100vw"
-                quality={95}
-                className="hidden object-cover sm:block"
-                style={{ objectPosition: item.position }}
-                placeholder="blur"
-                blurDataURL={BLUR_DATA_URL}
               />
             </motion.div>
           ))}
