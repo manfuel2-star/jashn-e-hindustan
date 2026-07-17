@@ -3,7 +3,7 @@ import Accordion from "@/components/Accordion";
 import PageHero from "@/components/PageHero";
 import { faqs } from "@/data/site";
 
-export const metadata: Metadata = { title: "FAQs", description: "Answers to common questions about tickets, access, families, food and visiting Jashn-e-Hindustan.", openGraph: { images: ["/og.jpg"] } };
+export const metadata: Metadata = { title: "FAQs", description: "Answers to common questions about tickets, access, families, food and visiting Jashn-e-Hindustan.", openGraph: { images: ["/og-hq.jpg"] } };
 
 export default function FaqsPage() {
   return (

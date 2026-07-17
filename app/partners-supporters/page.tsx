@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import AnimatedSection from "@/components/AnimatedSection";
 
-export const metadata: Metadata = { title: "Partners & Supporters", description: "Meet the cultural, hospitality, media and community partners supporting Jashn-e-Hindustan.", openGraph: { images: ["/og.jpg"] } };
+export const metadata: Metadata = { title: "Partners & Supporters", description: "Meet the cultural, hospitality, media and community partners supporting Jashn-e-Hindustan.", openGraph: { images: ["/og-hq.jpg"] } };
 
 const groups = [
   { title: "Founding partners", names: ["Aarohan Foundation", "House of Sunehri", "The India Arts Trust"] },

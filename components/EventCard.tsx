@@ -26,7 +26,7 @@ export default function EventCard({ title, subtitle, image, meta, href = "/sched
     >
       <Link href={href} className="block">
         <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-maroon shadow-card">
-          <Image src={image} alt="" fill sizes="(max-width: 768px) 90vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
+          <Image src={image} alt="" fill sizes="(max-width: 768px) 90vw, 33vw" quality={90} className="object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
           <div className="absolute left-5 right-5 top-5 flex items-center justify-between text-[0.66rem] uppercase tracking-[0.22em] text-cream/80">
             <span>{meta ?? "Jashn 2027"}</span>

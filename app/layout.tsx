@@ -12,8 +12,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: "Jashn-e-Hindustan 2027", template: "%s · Jashn-e-Hindustan" },
   description: "A three-day celebration of India’s languages, arts, music, food, craft and living heritage in New Delhi.",
-  openGraph: { title: "Jashn-e-Hindustan 2027", description: "A festival of many Indias. 12–14 February 2027, New Delhi.", type: "website", images: ["/og.jpg"] },
-  twitter: { card: "summary_large_image", title: "Jashn-e-Hindustan 2027", description: "A festival of many Indias. 12–14 February 2027, New Delhi.", images: ["/og.jpg"] },
+  openGraph: { title: "Jashn-e-Hindustan 2027", description: "A festival of many Indias. 12–14 February 2027, New Delhi.", type: "website", images: ["/og-hq.jpg"] },
+  twitter: { card: "summary_large_image", title: "Jashn-e-Hindustan 2027", description: "A festival of many Indias. 12–14 February 2027, New Delhi.", images: ["/og-hq.jpg"] },
 };
 
 export default function RootLayout({

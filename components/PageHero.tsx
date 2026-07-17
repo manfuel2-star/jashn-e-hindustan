@@ -6,7 +6,7 @@ type Props = { eyebrow: string; title: string; description: string; image?: stri
 export default function PageHero({ eyebrow, title, description, image = "/images/textile.jpg" }: Props) {
   return (
     <section className="relative flex min-h-[62svh] items-end overflow-hidden bg-black px-5 pb-12 pt-32 text-cream sm:min-h-[68vh] md:px-10 md:pb-24 md:pt-36">
-      <Image src={image} alt="" fill priority className="object-cover opacity-45" sizes="100vw" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
+      <Image src={image} alt="" fill priority quality={90} className="object-cover opacity-45" sizes="100vw" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30" />
       <div className="relative mx-auto w-full max-w-[1440px]">

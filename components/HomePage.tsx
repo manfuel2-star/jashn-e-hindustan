@@ -20,7 +20,8 @@ const gallery = ["/images/holi.jpg", "/images/diya.jpg", "/images/folk-dance.jpg
 
 const heroSlides = [
   {
-    image: "/images/hero-festival-v2.jpg",
+    image: "/images/hero-festival-v2-hq.jpg",
+    mobileImage: "/images/hero-dance-mobile-hq.jpg",
     alt: "An Indian classical dancer performing in a heritage garden at night",
     eyebrow: "A festival of many Indias",
     title: "Jashn-e-",
@@ -28,7 +29,8 @@ const heroSlides = [
     position: "68% center",
   },
   {
-    image: "/images/hero-music.jpg",
+    image: "/images/hero-music-hq.jpg",
+    mobileImage: "/images/hero-music-mobile-hq.jpg",
     alt: "Indian classical musicians performing on an intimate open-air stage",
     eyebrow: "Music across traditions",
     title: "One sky.",
@@ -36,7 +38,8 @@ const heroSlides = [
     position: "72% center",
   },
   {
-    image: "/images/hero-craft.jpg",
+    image: "/images/hero-craft-hq.jpg",
+    mobileImage: "/images/hero-craft-mobile-hq.jpg",
     alt: "A master textile artisan weaving at a handloom in a heritage pavilion",
     eyebrow: "Craft, food & living heritage",
     title: "India,",
@@ -98,13 +101,26 @@ export default function HomePage() {
               aria-hidden={index !== activeSlide}
             >
               <Image
+                src={item.mobileImage}
+                alt={index === activeSlide ? item.alt : ""}
+                fill
+                priority={index === 0}
+                loading={index === 0 ? undefined : "eager"}
+                sizes="100vw"
+                quality={95}
+                className="object-cover object-top sm:hidden"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
+              />
+              <Image
                 src={item.image}
                 alt={index === activeSlide ? item.alt : ""}
                 fill
                 priority={index === 0}
                 loading={index === 0 ? undefined : "eager"}
                 sizes="100vw"
-                className="object-cover"
+                quality={95}
+                className="hidden object-cover sm:block"
                 style={{ objectPosition: item.position }}
                 placeholder="blur"
                 blurDataURL={BLUR_DATA_URL}
@@ -112,7 +128,7 @@ export default function HomePage() {
             </motion.div>
           ))}
         </motion.div>
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(13,9,8,.96)_0%,rgba(13,9,8,.72)_47%,rgba(13,9,8,.18)_82%),linear-gradient(0deg,rgba(13,9,8,.88)_0%,transparent_58%)] md:bg-[linear-gradient(90deg,rgba(13,9,8,.94)_0%,rgba(13,9,8,.58)_45%,rgba(13,9,8,.12)_78%),linear-gradient(0deg,rgba(13,9,8,.82)_0%,transparent_55%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,9,8,.46)_0%,rgba(13,9,8,.06)_30%,rgba(13,9,8,.14)_48%,rgba(13,9,8,.96)_82%),linear-gradient(90deg,rgba(13,9,8,.52)_0%,transparent_84%)] sm:bg-[linear-gradient(90deg,rgba(13,9,8,.94)_0%,rgba(13,9,8,.58)_45%,rgba(13,9,8,.12)_78%),linear-gradient(0deg,rgba(13,9,8,.82)_0%,transparent_55%)]" />
         <div className="absolute left-[8%] top-[20%] hidden h-[36rem] w-[36rem] rounded-full border border-gold/20 md:block" />
         <div className="absolute left-[12%] top-[26%] hidden h-[28rem] w-[28rem] rounded-full border border-gold/10 md:block" />
         <motion.div style={{ y: contentY, opacity: contentOpacity }} className="section-shell relative flex min-h-[100dvh] flex-col justify-end pb-9 pt-32 md:justify-center md:pb-10 md:pt-36">
@@ -180,7 +196,7 @@ export default function HomePage() {
           <div className="mt-14 grid gap-4 md:mt-20 md:grid-cols-12 md:grid-rows-2">
             {programs.slice(0, 4).map((program, index) => (
               <motion.article key={program.title} initial={{ opacity: 0, scale: .97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * .09 }} className={`group relative min-h-[22rem] overflow-hidden rounded-[1.25rem] ${index === 0 ? "md:col-span-7 md:row-span-2 md:min-h-[44rem]" : "md:col-span-5"}`}>
-                <Image src={program.image} alt="" fill sizes="(max-width: 768px) 100vw, 55vw" className="object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
+                <Image src={program.image} alt="" fill sizes="(max-width: 768px) 100vw, 55vw" quality={90} className="object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
                 <div className="absolute bottom-0 p-6 md:p-8"><p className="mb-2 text-xs uppercase tracking-[0.2em] text-gold">{program.category}</p><h3 className="font-serif text-3xl md:text-4xl">{program.title}</h3></div>
               </motion.article>
@@ -195,7 +211,7 @@ export default function HomePage() {
           <div className="mt-20 space-y-20 md:space-y-32">
             {experiences.map((item, index) => (
               <AnimatedSection key={item.title} className={`grid items-center gap-10 md:grid-cols-2 md:gap-20 ${index % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
-                <div className="relative aspect-[5/4] overflow-hidden rounded-[1.25rem] shadow-card"><Image src={item.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} /><div className="absolute bottom-5 left-5 rounded-full bg-black/70 px-4 py-2 text-[0.64rem] uppercase tracking-[0.18em] text-cream backdrop-blur">{item.note}</div></div>
+                <div className="relative aspect-[5/4] overflow-hidden rounded-[1.25rem] shadow-card"><Image src={item.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" quality={90} className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} /><div className="absolute bottom-5 left-5 rounded-full bg-black/70 px-4 py-2 text-[0.64rem] uppercase tracking-[0.18em] text-cream backdrop-blur">{item.note}</div></div>
                 <div><p className="mb-5 text-xs font-bold uppercase tracking-[0.24em] text-maroon">{item.eyebrow}</p><h3 className="font-serif text-5xl leading-[.92] md:text-7xl">{item.title}</h3><p className="mt-6 max-w-xl text-base leading-8 text-ink/65 md:text-lg">{item.copy}</p><Link href="/programs-and-sessions" className="mt-8 inline-flex items-center gap-2 border-b border-maroon/30 pb-2 text-xs font-bold uppercase tracking-[0.16em] text-maroon">Discover the experience <ArrowRight size={15} /></Link></div>
               </AnimatedSection>
             ))}
@@ -207,7 +223,7 @@ export default function HomePage() {
         <div className="section-shell grid items-center gap-14 md:grid-cols-[.78fr_1.22fr] md:gap-24">
           <AnimatedSection><p className="mb-5 text-xs uppercase tracking-[0.24em] text-gold">Festival venue</p><h2 className="font-serif text-6xl leading-[.9] md:text-8xl">A garden<br /><em className="text-gold">full of stories.</em></h2><p className="mt-7 max-w-md leading-8 text-cream/60">Heritage, ecology and culture meet across 90 acres at Sunder Nursery—minutes from central Delhi, yet made for lingering.</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/visitors-guide" className="button button-gold"><MapPin size={15} />Visitor’s guide</Link><a href="https://maps.google.com/?q=Sunder+Nursery+New+Delhi" className="button button-outline">Open maps</a></div></AnimatedSection>
           <AnimatedSection delay={0.1} className="relative aspect-[5/4] overflow-hidden rounded-[1.5rem] border border-white/10">
-            <Image src="/images/venue.jpg" alt="Heritage architecture in a landscaped garden" fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover opacity-70" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
+            <Image src="/images/venue.jpg" alt="Heritage architecture in a landscaped garden" fill sizes="(max-width: 768px) 100vw, 60vw" quality={90} className="object-cover opacity-70" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
             <div className="absolute inset-0 bg-maroon/25 mix-blend-multiply" />
             {[{ x: "28%", y: "32%", label: "Surya Manch" }, { x: "67%", y: "25%", label: "Rasoi-e-Hind" }, { x: "58%", y: "68%", label: "Karigar Adda" }].map((pin) => <div key={pin.label} className="absolute" style={{ left: pin.x, top: pin.y }}><span className="relative flex size-4"><span className="absolute inline-flex size-full animate-ping rounded-full bg-gold opacity-70" /><span className="relative inline-flex size-4 rounded-full border-2 border-black bg-gold" /></span><span className="mt-2 block whitespace-nowrap rounded-full bg-black/80 px-3 py-1.5 text-[.58rem] uppercase tracking-[.15em] text-cream backdrop-blur">{pin.label}</span></div>)}
           </AnimatedSection>
@@ -218,12 +234,12 @@ export default function HomePage() {
         <div className="section-shell">
           <AnimatedSection><SectionHeading eyebrow="A living archive" title="Seen at Jashn" subtitle="Fragments of colour, performance, shared attention and the small moments that make a festival stay with you." /></AnimatedSection>
           <div className="mt-14 columns-2 gap-3 md:mt-20 md:columns-4 md:gap-5">
-            {gallery.map((src, index) => <motion.button key={src} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (index % 4) * .06 }} onClick={() => setLightbox(src)} className="group relative mb-3 block w-full overflow-hidden rounded-xl md:mb-5" aria-label="Open gallery image"><Image src={src} alt="Festival moment" width={900} height={index % 3 === 0 ? 1100 : 700} className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_DATA_URL} /><span className="absolute inset-0 bg-maroon/0 transition group-hover:bg-maroon/15" /></motion.button>)}
+            {gallery.map((src, index) => <motion.button key={src} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (index % 4) * .06 }} onClick={() => setLightbox(src)} className="group relative mb-3 block w-full overflow-hidden rounded-xl md:mb-5" aria-label="Open gallery image"><Image src={src} alt="Festival moment" width={900} height={index % 3 === 0 ? 1100 : 700} quality={90} className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_DATA_URL} /><span className="absolute inset-0 bg-maroon/0 transition group-hover:bg-maroon/15" /></motion.button>)}
           </div>
         </div>
       </section>
 
-      <AnimatePresence>{lightbox && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setLightbox(null)} className="fixed inset-0 z-[70] grid place-items-center bg-black/95 p-5"><button onClick={() => setLightbox(null)} className="absolute right-5 top-5 z-10 grid size-12 place-items-center rounded-full border border-white/20 text-cream" aria-label="Close image"><X /></button><motion.div initial={{ scale: .96 }} animate={{ scale: 1 }} className="relative h-[82vh] w-full max-w-6xl"><Image src={lightbox} alt="Festival gallery view" fill className="object-contain" sizes="100vw" /></motion.div></motion.div>}</AnimatePresence>
+      <AnimatePresence>{lightbox && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setLightbox(null)} className="fixed inset-0 z-[70] grid place-items-center bg-black/95 p-5"><button onClick={() => setLightbox(null)} className="absolute right-5 top-5 z-10 grid size-12 place-items-center rounded-full border border-white/20 text-cream" aria-label="Close image"><X /></button><motion.div initial={{ scale: .96 }} animate={{ scale: 1 }} className="relative h-[82vh] w-full max-w-6xl"><Image src={lightbox} alt="Festival gallery view" fill quality={95} className="object-contain" sizes="100vw" /></motion.div></motion.div>}</AnimatePresence>
 
       <section className="relative overflow-hidden bg-maroon px-5 py-24 text-cream md:px-10 md:py-32">
         <div className="absolute -right-20 -top-40 size-[34rem] rounded-full border border-gold/20" /><div className="absolute -right-8 -top-28 size-[26rem] rounded-full border border-gold/15" />

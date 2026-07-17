@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import ScheduleExplorer from "@/components/ScheduleExplorer";
 
-export const metadata: Metadata = { title: "Schedule", description: "Explore the day-by-day, stage-by-stage schedule for Jashn-e-Hindustan 2027.", openGraph: { images: ["/og.jpg"] } };
+export const metadata: Metadata = { title: "Schedule", description: "Explore the day-by-day, stage-by-stage schedule for Jashn-e-Hindustan 2027.", openGraph: { images: ["/og-hq.jpg"] } };
 
 export default function SchedulePage() {
   return (
