@@ -48,7 +48,7 @@ const heroSlides = [
   },
 ] as const;
 
-const HERO_DURATION = 6500;
+const HERO_DURATION = 2000;
 
 function HeroPicture({
   slide,
@@ -135,7 +135,7 @@ export default function HomePage() {
               key={item.image}
               initial={false}
               animate={{ opacity: index === activeSlide ? 1 : 0, scale: index === activeSlide ? 1 : 1.035 }}
-              transition={{ duration: reduceMotion ? 0 : 1.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 will-change-transform"
               aria-hidden={index !== activeSlide}
             >
